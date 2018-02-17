@@ -91,10 +91,10 @@ class Run extends Component {
 }
 
 class CodeInput extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      text: 'placeholder',
+      text: this.props.text,
     }
   }
 
@@ -114,11 +114,23 @@ class CodeInput extends Component {
 }
 
 class Inbox extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      text: this.props.text,
+    }
+  }
+
+  onChange = (e) => {
+    this.setState({text: e.target.value});
+    this.props.onChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="io-box">
         <h1>Inbox</h1>
-        <textarea className='io-input'></textarea>
+        <textarea className='io-input' onChange={this.onChange} value={this.state.text} ></textarea>
       </div>
     )
   }
@@ -129,7 +141,7 @@ class Outbox extends Component {
     return (
       <div className='io-box'>
         <h1>Outbox</h1>
-        <textarea className='io-input' readOnly></textarea>
+        <textarea className='io-input' value={this.props.text} readOnly></textarea>
       </div>
     )
   }
@@ -155,6 +167,10 @@ class App extends Component {
     this.setState({code: input})
   }
 
+  handleInbox(input) {
+    this.setState({inbox: input})
+  }
+
   render() {
     return (
       <div>
@@ -169,12 +185,12 @@ class App extends Component {
         </div>
         <div className='main-container'>
           <div className='sub-container'>
-            <CodeInput text='placeholdera' onChange={(input) => this.handleCode(input)} />
+            <CodeInput text={this.state.code} onChange={(input) => this.handleCode(input)} />
           </div>
           <div className='sub-container'>
             <Reg programCounter={this.state.computer.programCounter} cycleCount={this.state.computer.cycleCount} accumulator={this.state.computer.accumulator}/>
-            <Outbox />
-            <Inbox />
+            <Outbox text={this.state.outbox}/>
+            <Inbox text={this.state.code} onChange={(input => this.handleInbox(input))} />
           </div>
           <div className='main-container'>
             <Memory memory={this.state.computer.memory} active={this.state.computer.programCounter} />
