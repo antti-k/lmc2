@@ -1,0 +1,73 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: arial;
+	outline: none;
+}
+
+h1 {
+  text-align: center;
+}
+
+.App {
+  text-align: center;
+}
+
+.main-container {
+  background: #F5F5F5;
+  display: flex;
+  justify-content: center;
+}
+
+.code-input {
+  resize: none;
+}
+
+.table {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  border: 1px solid black;
+}
+
+.reg-table {
+  max-width: 150px;
+}
+
+.cell-container {
+  text-align: center;
+  display: flex;
+  height: 40px;
+  width: 10%;
+  justify-content: space-between;
+  flex-direction: column;
+  border: 1px solid black;
+}
+
+.reg-cell-container {
+  width: 33.33%;
+}
+
+.memory-table {
+  max-width: 350px;
+}
+
+.header-cell {
+  font-weight: bold;
+  background: #33A2FF;
+  color: white;
+  border-bottom: 1px solid black;
+}
+
+.regular-cell {
+  background: white;
+  color: black;
+  border-top: 1px solid black;
+}
+
+.active-cell {
+  background-color: #666;
+  color: #FFF;
+  border-top: 1px solid black;
+}
