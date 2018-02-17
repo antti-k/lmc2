@@ -186,11 +186,13 @@ class App extends Component {
   }
 
   handleRun() {
-    this.setState(
-      {inbox: '1\n2'}
-    )
+    let tmp = true;
+    this.loadToInbox();
+    while (tmp) {
+      tmp = Computer.cycle();
+    };
+    this.updateGUI();
   }
-
 
   updateGUI() {
     this.setState({
@@ -230,8 +232,8 @@ class App extends Component {
           </div>
           <div className='sub-container'>
             <Reg programCounter={this.state.programCounter} cycleCount={this.state.cycleCount} accumulator={this.state.accumulator}/>
-            <Outbox text={this.state.outbox}/>
             <Inbox text={this.state.inbox} onChange={(input => this.handleInbox(input))} />
+            <Outbox text={this.state.outbox}/>
           </div>
           <div className='main-container'>
             <Memory memory={this.state.memory} active={this.state.programCounter} />
