@@ -107,7 +107,7 @@ class CodeInput extends Component {
     return (
       <div>
         <h1>Code Input</h1>
-        <textarea className='code-input' onChange={this.onChange} value={this.state.text} ></textarea>
+        <textarea className='code-input' onChange={this.onChange} value={this.props.text} ></textarea>
       </div>
     )
   }
@@ -130,7 +130,7 @@ class Inbox extends Component {
     return (
       <div className="io-box">
         <h1>Inbox</h1>
-        <textarea className='io-input' onChange={this.onChange} value={this.state.text} ></textarea>
+        <textarea className='io-input' onChange={this.onChange} value={this.props.text} ></textarea>
       </div>
     )
   }
@@ -152,6 +152,10 @@ class App extends Component {
     super()
     this.state = {
       computer: Computer,
+      memory: Computer.memory,
+      programCounter: Computer.programCounter,
+      cycleCount: Computer.cycleCount,
+      accumulator: Computer.accumulator,
       code: '',
       outbox: '',
       inbox: '',
@@ -160,7 +164,11 @@ class App extends Component {
   }
 
   handleAssemble() {
-    console.log('handleASsemble')
+    const instructionArray = Assembler.assemble(this.state.code);
+    Computer.reset();
+    Computer.loadInstructions(instructionArray);
+    this.loadToInbox();
+    this.updateGUI();
   }
   
   handleCode(input) {
@@ -169,6 +177,39 @@ class App extends Component {
 
   handleInbox(input) {
     this.setState({inbox: input})
+  }
+
+  handleStep(input) {
+    this.loadToInbox();
+    Computer.cycle();
+    this.updateGUI();
+  }
+
+  handleRun() {
+    this.setState(
+      {inbox: '1\n2'}
+    )
+  }
+
+
+  updateGUI() {
+    this.setState({
+      memory: Computer.memory,
+      programCounter: Computer.programCounter,
+      cycleCount: Computer.cycleCount,
+      accumulator: Computer.accumulator,
+      outbox: Computer.outbox.join('\n'),
+      inbox: Computer.inbox.join('\n')
+    }); 
+  }
+
+  loadToInbox() {
+    const input = this.state.inbox;
+    Computer.clearInbox();
+    input.split('\n')
+			.map((val) => parseInt(val))
+			.filter((val) => Number.isInteger(val))
+			.forEach((val) => Computer.inbox.push(val));
   }
 
   render() {
@@ -188,12 +229,12 @@ class App extends Component {
             <CodeInput text={this.state.code} onChange={(input) => this.handleCode(input)} />
           </div>
           <div className='sub-container'>
-            <Reg programCounter={this.state.computer.programCounter} cycleCount={this.state.computer.cycleCount} accumulator={this.state.computer.accumulator}/>
+            <Reg programCounter={this.state.programCounter} cycleCount={this.state.cycleCount} accumulator={this.state.accumulator}/>
             <Outbox text={this.state.outbox}/>
-            <Inbox text={this.state.code} onChange={(input => this.handleInbox(input))} />
+            <Inbox text={this.state.inbox} onChange={(input => this.handleInbox(input))} />
           </div>
           <div className='main-container'>
-            <Memory memory={this.state.computer.memory} active={this.state.computer.programCounter} />
+            <Memory memory={this.state.memory} active={this.state.programCounter} />
           </div>
         </div>
       </div>);
