@@ -6,6 +6,35 @@
 	outline: none;
 }
 
+ul {
+  list-style-type: none;
+  background: #1A96FF;
+  display: flex;
+  justify-content: space-between;
+}
+
+select {
+  font-size: 18px;
+}
+
+
+button {
+  height: 50px;
+  padding: 5px;
+  font-size: 19px;
+  border: 0;
+  color:  #FFF;
+  background-color: #1A96FF;
+}
+
+button:hover {
+  background-color: #008BFF;
+}
+
+button:active {
+  background-color: #33A2FF;
+}
+
 h1 {
   text-align: center;
 }
@@ -14,14 +43,45 @@ h1 {
   text-align: center;
 }
 
+.menu-container {
+  display: flex;
+  justify-content: center;
+  background: #1A96FF;
+}
+
 .main-container {
   background: #F5F5F5;
   display: flex;
   justify-content: center;
 }
 
+.sub-container {
+  padding: 0 3px 4px 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .code-input {
   resize: none;
+  height: 100%;
+}
+
+.io-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.io-input {
+  resize: none;
+  height: 100%;
+  width: 120px;
 }
 
 .table {
@@ -70,4 +130,10 @@ h1 {
   background-color: #666;
   color: #FFF;
   border-top: 1px solid black;
+}
+
+@media only screen and (min-width: 651px) {
+	ul {
+		width: 650px;
+	}
 }

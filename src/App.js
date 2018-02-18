@@ -4,9 +4,10 @@ import Computer from './computer.js';
 import Assembler from './assembler.js';
 
 class Memory extends Component {
+  /* TODO:Using index as a key is bad practice */
   renderCell(value, index) {
     return (
-      <div className='cell-container'>
+      <div className='cell-container' key={index}>
         <div className='header-cell'>{index}</div>
         <div className={this.props.active === index ? 'active-cell' : 'regular-cell'}>{value}</div>
       </div>
@@ -58,9 +59,28 @@ class About extends Component {
 }
 
 class Load extends Component {
+  constructor() {
+    super()
+    this.state = {
+      value: 'none'
+    }
+  }
+
+  onChange = (e) => {
+    this.setState({value: e.target.value})
+  }
+
   render() {
     return (
-      <div>
+      <div className='load-container'>
+        <button onClick={() => this.props.onClick(this.state.value)}>Load</button>
+        <select value={this.state.value} onChange={this.onChange}>
+          <option value='none'>-</option>
+          <option value='io'>IO</option>
+          <option value='add'>ADD</option>
+          <option value='multi'>MULTIPLY</option>
+          <option value='max'>MAX</option>V
+        </select>
       </div>
     )
   }
@@ -105,7 +125,7 @@ class CodeInput extends Component {
 
   render() {
     return (
-      <div>
+      <div className='code-container'>
         <h1>Code Input</h1>
         <textarea className='code-input' onChange={this.onChange} value={this.props.text} ></textarea>
       </div>
@@ -169,6 +189,29 @@ class App extends Component {
     Computer.loadInstructions(instructionArray);
     this.loadToInbox();
     this.updateGUI();
+  }
+
+  handleLoad(sel) {
+    let code = ""
+    let inbox = ""
+    if (sel == "io") {
+			code = "// Get a value from inbox and then output it to the outbox \nINP \nOUT \nHLT";
+			inbox = "506";
+		} else if (sel == "add") {
+			code = "// Get two values from inbox, add them together and then output the result \nINP \nSTA tmp \nINP \nADD tmp \nOUT \nHLT \ntmp DAT";
+			inbox = "506\n360";
+
+		} else if (sel == "multi") {
+			code = "// Get two values, multiply first value by second and then output the result \nINP \nSTA tmp1 \nINP \nloop BRZ op \nSUB one \nSTA tmp2 \nLDA tmp3 \nADD tmp1 \nSTA tmp3 \nLDA tmp2 \nBRA loop \nop LDA tmp3 \nOUT \nHLT \ntmp1 DAT \ntmp2 DAT \ntmp3 DAT \none DAT 1";
+			inbox = "41\n18";
+		} else if (sel == "max") {
+			code = "//First input amount of numbers to check and then the numbers. Outputs the largest number \nINP \nnext BRZ end \nSUB one \nSTA count \nINP \nSTA tmp \nSUB max \nBRP isGreater \nBRA skip \nisGreater LDA tmp \nSTA max \nskip LDA count \nBRA next \nend LDA max \nOUT \nHLT \ncount DAT \none DAT 1 \nmax DAT 0 \ntmp DAT";
+			inbox = "5\n256\n455\n506\n888\n456";
+		}
+    this.setState({
+      code: code,
+      inbox: inbox
+    })
   }
   
   handleCode(input) {
@@ -235,7 +278,7 @@ class App extends Component {
             <Inbox text={this.state.inbox} onChange={(input => this.handleInbox(input))} />
             <Outbox text={this.state.outbox}/>
           </div>
-          <div className='main-container'>
+          <div className='sub-container'>
             <Memory memory={this.state.memory} active={this.state.programCounter} />
           </div>
         </div>
