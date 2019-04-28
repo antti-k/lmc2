@@ -1,6 +1,8 @@
 # LMC 2
+## Note
+New version of my [LMC](https://github.com/antti-k/lmc).
 ## Intro
-New version of my [LMC](https://github.com/antti-k/lmc). Written in react for performance increase.
+Little man computer (LMC) is a simple model of a computer that is generally used for learning purposes. When I first read about LMC I tought that programming my own simulator would be a great learning opportunity. Simulator is mostly based on [Wikipedia entry of LMC](https://en.wikipedia.org/wiki/Little_man_computer).  My simulator also has a functional assembler that supports mneumonics and labels for ease of programming. 
 
 ## Quick Start
 1. [Open the app (Heroku)](https://guarded-brook-49030.herokuapp.com)
